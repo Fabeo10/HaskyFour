@@ -55,19 +55,33 @@ module Board (Board, mkBoard, mkPlayer, mkOpponent, numSlot, isSlotOpen, isFull,
 
  --- Part 3) ------------------------------------------------------------------------------
     -- Check if the player has won by checking if there are 4 in a row, includes wrap around
+    -- Later, implemented diagonal checks for a complete game
     isWonBy :: Board -> Int -> Bool
-    isWonBy bd p = any (checkLine p) (rows ++ cols)
+    isWonBy bd p = any (hasRun p k) (rows ++ cols) || any (hasDiag p k) directions
         where
-            k = 4  -- winning length
+            k = 4
             rows = bd
             cols = transposeBoard bd
-            checkLine :: Int -> [Int] -> Bool
-            checkLine player xs = any isWin [0 .. length xs - 1]
+            -- Check a linear run in a list (wrap-around)
+            hasRun player len xs = any isWin [0 .. length xs - 1]
                 where
-                    ext = xs ++ take (k - 1) xs
-                    isWin i = all (== player) (take k (drop i ext))
+                    ext = xs ++ take (len - 1) xs
+                    isWin i = all (== player) (take len (drop i ext))
+            -- Diagonal checks: directions are (dRow, dCol)
+            directions = [(1,1), (-1,1)]
+            numRows = length bd
+            numCols = numSlot bd
+            -- Check diagonals for a direction
+            hasDiag player len (dR, dC) = or
+                [ all (\i -> getCell bd ((r + i * dR) `mod` numRows) ((c + i * dC) `mod` numCols) == player) [0..len-1]
+                | r <- [0..numRows-1], c <- [0..numCols-1]
+                ]
 
+    -- Helper function to safely retrieve a cell from the board with wrap-around
+    getCell :: Board -> Int -> Int -> Int
+    getCell bd r c = (bd !! r) !! c
 
+    -- Tranpose the board implemented with pattern matching
     transposeBoard :: Board -> Board
     transposeBoard xss
         | any null xss = []
