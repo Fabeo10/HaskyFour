@@ -2,7 +2,7 @@
 -------------------------------------------------------------------------------------------
 -- Fabian Ornelas
 -------------------------------------------------------------------------------------------
-module Board (Board, mkBoard, mkPlayer, mkOpponent, numSlot, isSlotOpen, isFull, dropInSlot, isWonBy) where
+module Board (Board, mkBoard, mkPlayer, mkOpponent, numSlot, isSlotOpen, isFull, dropInSlot, isWonBy, boardToStr) where
  --- Part 1) ------------------------------------------------------------------------------
     -- Let's create a board for the game and access its elements
     type Board = [[Int]]
@@ -72,3 +72,14 @@ module Board (Board, mkBoard, mkPlayer, mkOpponent, numSlot, isSlotOpen, isFull,
     transposeBoard xss
         | any null xss = []
         | otherwise    = [ h | (h:_) <- xss ] : transposeBoard [ t | (_:t) <- xss ]
+
+ --- Part 4) ------------------------------------------------------------------------------
+    -- Convert the board to a string representation
+    boardToStr :: (Int -> Char) -> Board -> String
+    boardToStr playerToChar bd = unlines $ map renderRow bd
+        where
+            renderRow :: [Int] -> String
+            renderRow = unwords . map toStr 
+            toStr :: Int -> String
+            toStr 0 = "."
+            toStr p = [playerToChar p]
