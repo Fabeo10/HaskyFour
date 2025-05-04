@@ -1,112 +1,84 @@
-HaskyFour: Console-based Connect Four in Haskell
+🎮 HaskyFour: Console-Based Connect Four in Haskell
 
-A pure Haskell implementation of the classic Connect Four game, built using the Model–View–Controller (MVC) pattern. Players take turns dropping discs into a 7×6 grid, aiming to connect four in a row horizontally, vertically, or diagonally (with wrap-around support).
+A functional Haskell implementation of the classic Connect Four game, following the Model–View–Controller (MVC) pattern. Drop discs, connect four, and optionally play against a simple AI!
 
-🎯 Features
+✨ Features
 
-Pure Model (Board.hs)
-
-Board creation and manipulation without any I/O.
-
-Slot queries (numSlot, isSlotOpen, isFull).
-
-Disc dropping logic (dropInSlot).
-
-Quit the game anytime with q or Q
-
-Win detection (isWonBy) for horizontal, vertical, and diagonal runs (with wrap-around).
-
-Pretty-print conversion (boardToStr).
-
-View/Controller (Main.hs)
-
-Console-based UI for two-player gameplay.
-
-Robust input handling (readSlot), with prompts and validation.
-
-Turn-taking game loop (gameLoop) that prints the board, reads moves, and announces results.
-
-Prerequisites
-
-GHC (version 8.10 or higher recommended), or Hugs, etc.
-
-▶️ Getting Started
-
-Clone the repository:
-
-git clone https://github.com/Fabeo10/HaskyFour.git
-cd HaskyFour
-
-Compile & Run with GHCi:
-
-ghci Board.hs Main.hs
-ghci> main
-
-How to Play
-
-On launch, you’ll see an empty 7×6 board printed as dots (.).
-
-Players O and X take turns entering a column number (1–7) to drop their disc.
-
-The board refreshes after each move.
-
-The first player to connect four discs in a row (horizontally, vertically, or diagonally) wins.
-
-If the board fills without any four-in-a-row, the game ends in a draw.
-
-Project Structure
+✅ Pure Model (Board.hs)
+Pure functional logic with no I/O.
+Functions for board creation, slot queries, and disc drops.
+Full win detection:
+Horizontal, vertical, and diagonal (with wrap-around logic).
+Graceful handling of full boards and illegal moves.
+Board rendering via boardToStr.
+🧠 View/Controller (Main.hs)
+Interactive console UI with turn-based gameplay.
+Robust input validation: column numbers or quitting with q.
+AI opponent support (optional):
+Uses System.Random to generate random valid moves.
+Turn-taking game loop prints board and announces results.
+🧱 Project Structure
 
 HaskyFour/
-├── Board.hs      -- Model: board logic & win detection
-├── Main.hs       -- View/Controller: I/O & game loop
-├── README.md     -- This documentation
-└── LICENSE       -- (optional) License file
+├── app/
+│   ├── Main.hs       -- Controller & UI
+│   └── Board.hs      -- Pure board logic
+├── HaskyFour.cabal   -- Cabal project file
+└── README.md         -- This file
+🧑‍💻 Prerequisites
 
-Example Gameplay
-Welcome to Connect Four!
-Press 'q' at any time to exit.
+GHC (v8.10 or higher recommended)
+Cabal (for dependency management and running)
+Internet connection (for installing the random package)
+🚀 Getting Started
 
-Current board:
-. . . . . . .
-. . . . . . .
-. . . . . . .
-O . . . . . .
-O X . . . . .
-O X O X O X .
+Clone the repo:
+git clone https://github.com/Fabeo10/HaskyFour.git
+cd HaskyFour
+Initialize the project:
+cabal update
+cabal build
+Run interactively:
+cabal repl
+Launches the game in GHCi:
+> main
+🕹️ How to Play
 
-Player O, choose a column (1-7) or 'q' to quit:
-> 
+At launch, you'll see a blank 7×6 board.
+Players O and X take turns entering a column number (1–7).
+Type q at any time to quit.
+First to connect four in a row wins!
+If the board fills without a winner, it's a draw.
+🧠 AI Mode (Bonus Feature)
 
+You can replace one of the human players with a computer opponent:
 
-Coding Conventions & Guidelines
+Uses randomRIO to choose a valid slot.
+Implemented via the getRandomSlot function.
+Make sure random is listed in your .cabal file under build-depends:
 
-MVC separation: All I/O confined to Main.hs; Board.hs remains pure.
+  build-depends:
+      base >=4.7 && <5,
+      random
+🔧 Customization Ideas
 
-Prelude-only: No external libraries beyond standard Prelude and System.IO for flushing.
+✅ Custom board sizes
+✅ Smarter AI strategies
+🔜 Scorekeeping across rounds
+🔜 Menus for game mode selection
+✅ Coding Guidelines
 
-Error handling: Functions like dropInSlot and playerToChar use error on invalid inputs, while user-facing I/O loops validate and re-prompt.
-
-Wrap-around logic: Win detection considers cyclical sequences at grid edges.
-
-Extending the Game (In progress, will update if implemented...)
-
-AI Opponent: Replace the otherPlayer swap in gameLoop with an AI move generator.
-
-Custom dimensions: Parameterize cols and rows in main for different board sizes.
-
-Scorekeeping & menus: Add a menu system with multiple rounds and score tracking.
-
-
+MVC separation: Board.hs has no I/O, only pure logic.
+Uses only Prelude, System.IO, System.Exit, and System.Random.
+Proper error handling for both logic and user input.
 ❌ Exit Anytime
 
-Type q or Q when prompted for a column to quit the game gracefully.
+Press q or Q when prompted to gracefully exit the game.
 
 🛠 Built With
 
 Haskell
-Only standard prelude and modules (System.IO, System.Exit)
+GHC & Cabal
+📄 License
 
-
-📁 License
-
-This project is released under the MIT License. See LICENSE for details.
+MIT License – see the LICENSE file for details.
