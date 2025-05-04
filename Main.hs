@@ -67,4 +67,5 @@ module Main where
             rows = 6
             board = mkBoard cols rows
         putStrLn "Welcome to Connect Four!"
+        putStrLn "Press 'q' any time to exit."
         gameLoop board mkPlayer
