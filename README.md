@@ -70,7 +70,7 @@ cabal repl
 
 Launches the game in GHCi:
 
-> main
+ghci> main
 
 🕹️ How to Play
 
