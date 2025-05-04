@@ -6,6 +6,7 @@ module Main where
 
     import Board
     import System.IO (hFlush, stdout) -- flush stdout after printing
+    import System.Exit (exitSuccess)
 
  --- Part 1) ------------------------------------------------------------------------------
     -- Convert player number to display character discs: O for player 1 and X for player 2
@@ -19,14 +20,17 @@ module Main where
     -- Placed in a loop until a valid slot is entered
     readSlot :: Board -> Int -> IO Int
     readSlot bd p = do 
-        putStrLn $ "Player " ++ [playerToChar p] ++ ", choose a column (1-" ++ show (numSlot bd) ++ "): "
+        putStrLn $ "Player " ++ [playerToChar p] ++ ", choose a column (1-" ++ show (numSlot bd) ++ ") or 'q' to quit: "
         putStr "> " 
         hFlush stdout -- flush stdout to ensure prompt appears immediately
         line <- getLine
-        case reads line :: [(Int, String)] of
-            [(i, _)] | isSlotOpen bd i -> return i
-                     | otherwise -> invalid "The slot is full or out of range. "
-            _ -> invalid "Invalid input. Please enter a number. "
+        case line of
+            "q" -> putStrLn "Exiting the game..." >> exitSuccess
+            "Q" -> putStrLn "Exiting the game..." >> exitSuccess
+            _ -> case reads line :: [(Int, String)] of
+                [(i, _)] | isSlotOpen bd i -> return i
+                        | otherwise -> invalid "The slot is full or out of range. "
+                _ -> invalid "Invalid input. Please enter a number. "
         where
             invalid msg = do
                 putStrLn msg
