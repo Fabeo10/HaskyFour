@@ -72,6 +72,26 @@ Launches the game in GHCi:
 
 ghci> main
 
+Or if using hugs you may need to change these exit lines in main:
+
+import System.Exit (exitSuccess) -- line 9
+
+TO:
+
+import System.Exit (exitWith, ExitCode(..))
+
+AND 
+
+"q" -> putStrLn "Exiting the game..." >> exitSuccess -- line 32
+
+"Q" -> putStrLn "Exiting the game..." >> exitSuccess -- line 33
+
+TO:
+
+"q" -> putStrLn "Exiting the game..." >> exitWith ExitSuccess
+
+"Q" -> putStrLn "Exiting the game..." >> exitWith ExitSuccess
+
 🕹️ How to Play
 
 At launch, you'll be asked to select a game mode.
